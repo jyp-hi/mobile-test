@@ -1,0 +1,15 @@
+# Python
+venv/
+stock-auto/venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Mac
+.DS_Store
+
+# Allure
+allure-results/
+allure-report/
