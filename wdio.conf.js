@@ -17,33 +17,37 @@ exports.config = {
     // ==============================
     // 2. 테스트 실행 대상
     // ==============================
-    specs: ['./test/specs/**/*.js'], // 실행할 테스트 파일 경로
+    specs: process.env.CI
+        ? ['./test/specs/dummy.test.js'] // 👉 CI에서는 dummy만 실행
+        : ['./test/specs/**/*.js'],      // 👉 기존 그대로 유지
     maxInstances: 1, // 동시에 실행할 인스턴스 수 (모바일은 보통 1)
 
     // ==============================
     // 3. 디바이스 & 앱 설정
     // ==============================
-    capabilities: [
-        {
-            platformName: 'Android', // 플랫폼
+    capabilities: process.env.CI
+        ? [{}] // 👉 CI에서는 디바이스 없이 실행
+        : [
+            {
+                platformName: 'Android', // 플랫폼
 
-            // 디바이스 정보
-            'appium:deviceName': 'Pixel_3a_API_34',
-            'appium:udid': 'emulator-5554',
-            'appium:platformVersion': '14',
+                // 디바이스 정보
+                'appium:deviceName': 'Pixel_3a_API_34',
+                'appium:udid': 'emulator-5554',
+                'appium:platformVersion': '14',
 
-            // 자동화 엔진
-            'appium:automationName': 'UiAutomator2',
+                // 자동화 엔진
+                'appium:automationName': 'UiAutomator2',
 
-            // 실행할 앱 정보
-            'appium:appPackage': 'com.google.android.contacts',
-            'appium:appActivity': 'com.android.contacts.activities.PeopleActivity',
+                // 실행할 앱 정보
+                'appium:appPackage': 'com.google.android.contacts',
+                'appium:appActivity': 'com.android.contacts.activities.PeopleActivity',
 
-            // 옵션
-            'appium:noReset': true, // 앱 데이터 유지 (재설치 X)
-            'appium:autoGrantPermissions': true, // 권한 자동 허용
-        },
-    ],
+                // 옵션
+                'appium:noReset': true, // 앱 데이터 유지 (재설치 X)
+                'appium:autoGrantPermissions': true, // 권한 자동 허용
+            },
+        ],
 
     // ==============================
     // 4. 실행 설정
@@ -74,32 +78,34 @@ exports.config = {
     // ==============================
     // 6. 서비스 설정 (Appium 실행)
     // ==============================
-    services: [
-        [
-            'appium',
-            {
-                args: {
-                    address: '127.0.0.1',
-                    port: 4723,
+    services: process.env.CI
+        ? [] // 👉 CI에서는 Appium 실행 안함
+        : [
+            [
+                'appium',
+                {
+                    args: {
+                        address: '127.0.0.1',
+                        port: 4723,
+                    },
+                    command: 'appium', // Appium 실행 명령어
                 },
-                command: 'appium', // Appium 실행 명령어
-            },
-        ],
+            ],
 
-        // ❌ visual 테스트는 현재 비활성화 (충돌 방지)
-        /*
-        [
-            'visual',
-            {
-                baselineFolder: path.join(process.cwd(), 'test', 'baseline'),
-                formatImageName: '{tag}-{logName}-{width}x{height}',
-                autoSaveBaseline: true,
-                blockOutStatusBar: true,
-                blockOutNavigationBar: true,
-            },
+            // ❌ visual 테스트는 현재 비활성화 (충돌 방지)
+            /*
+            [
+                'visual',
+                {
+                    baselineFolder: path.join(process.cwd(), 'test', 'baseline'),
+                    formatImageName: '{tag}-{logName}-{width}x{height}',
+                    autoSaveBaseline: true,
+                    blockOutStatusBar: true,
+                    blockOutNavigationBar: true,
+                },
+            ],
+            */
         ],
-        */
-    ],
 
     // ==============================
     // 7. Mocha 옵션
