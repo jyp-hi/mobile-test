@@ -1,0 +1,30 @@
+name: WDIO Test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: Node 설치
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 의존성 설치
+        run: npm install
+
+      - name: 테스트 실행
+        run: npx wdio run wdio.conf.js
+
+      - name: Allure 결과 업로드
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
