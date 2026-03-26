@@ -10,12 +10,16 @@ jobs:
 
     steps:
       - name: 코드 가져오기
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Node 설치
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+
+      - name: Install dependencies for canvas
+        run: |
+        brew install pkg-config cairo pango libpng jpeg giflib
 
       - name: 의존성 설치
         run: npm install
