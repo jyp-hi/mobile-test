@@ -2,7 +2,7 @@ name: WDIO Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   test:
@@ -15,13 +15,13 @@ jobs:
       - name: Node 설치
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Install dependencies for canvas
+      - name: canvas deps 설치
         run: |
-        brew install pkg-config cairo pango libpng jpeg giflib
+          brew install pkg-config cairo pango libpng jpeg giflib
 
-      - name: 의존성 설치
+      - name: npm install
         run: npm install
 
       - name: 테스트 실행
