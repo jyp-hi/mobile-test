@@ -28,6 +28,9 @@ exports.config = {
     capabilities: process.env.CI
         ? [{
 	    browserName: 'chrome' 
+           'goog:chromeOptions': {
+               args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+        }
 	  }] // 👉 CI에서는 디바이스 없이 실행
         : [
             {
@@ -81,7 +84,7 @@ exports.config = {
     // 6. 서비스 설정 (Appium 실행)
     // ==============================
     services: process.env.CI
-        ? ['chromedriver'] // 👉 CI에서는 Appium 실행 안함
+        ? [] // 👉 CI에서는 Appium 실행 안함
         : [
             [
                 'appium',
