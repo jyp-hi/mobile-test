@@ -26,7 +26,9 @@ exports.config = {
     // 3. 디바이스 & 앱 설정
     // ==============================
     capabilities: process.env.CI
-        ? [{}] // 👉 CI에서는 디바이스 없이 실행
+        ? [{
+	    browserName: 'chrome' 
+	  }] // 👉 CI에서는 디바이스 없이 실행
         : [
             {
                 platformName: 'Android', // 플랫폼
@@ -79,7 +81,7 @@ exports.config = {
     // 6. 서비스 설정 (Appium 실행)
     // ==============================
     services: process.env.CI
-        ? [] // 👉 CI에서는 Appium 실행 안함
+        ? ['chromedriver'] // 👉 CI에서는 Appium 실행 안함
         : [
             [
                 'appium',
