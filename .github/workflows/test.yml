@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "main" ]
 
+permissions:
+  contents: write   # 🔥🔥 이거 추가 (핵심)
+
 jobs:
   test:
     runs-on: macos-latest
@@ -29,6 +32,17 @@ jobs:
 
       - name: 테스트 실행
         run: npx wdio run wdio.conf.js
+
+      - name: Allure 리포트 생성
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+
+      - name: GitHub Pages 배포
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
 
       - name: Allure 결과 업로드
         uses: actions/upload-artifact@v4
