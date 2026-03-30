@@ -10,9 +10,9 @@ exports.config = {
     // ==============================
     // 1. Appium 서버 접속 정보
     // ==============================
-    hostname: '127.0.0.1', // Appium 서버 주소 (로컬)
-    port: 4723,            // Appium 서버 포트
-    path: '/',             // Appium 2.x 기본 경로
+    hostname: process.env.CI ? undefined : '127.0.0.1',
+    port: process.env.CI ? undefined : 4723,
+    path: process.env.CI ? undefined : '/',
 
     // ==============================
     // 2. 테스트 실행 대상
